@@ -92,6 +92,13 @@
  #define PIXELFEATURE4 NeoGrbwFeature
 #endif
 
+#ifdef M5STACK
+  #undef  LEDPIN
+  #define LEDPIN 21
+  #undef  BTNPIN
+  #define BTNPIN 39
+#endif
+
 
 #include <NeoPixelBrightnessBus.h>
 

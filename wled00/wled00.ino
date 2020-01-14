@@ -89,6 +89,10 @@
   #include <IRutils.h>
  #endif
 
+#ifdef M5STACK
+  #include <M5Stack.h>
+#endif
+
 //version code in format yymmddb (b = daily build)
 #define VERSION 2001131
 char versionString[] = "0.9.0-b2";
@@ -497,6 +501,14 @@ bool oappendi(int i)
 //boot starts here
 void setup() {
   wledInit();
+  #ifdef M5STACK
+    M5.begin(true, false, false, false);
+    M5.Lcd.clear(BLACK);
+    M5.Lcd.setTextColor(YELLOW);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(80, 0); M5.Lcd.println("WLED ready");
+    M5.Lcd.setTextColor(WHITE);
+  #endif
 }
 
 
@@ -559,5 +571,11 @@ void loop() {
      debugTime = millis();
    }
    loops++;
+  #endif
+  #ifdef M5STACK
+    M5.update();
+    if (M5.BtnB.wasPressed()) {
+      M5.Lcd.printf("Speed: %3i   Intesity: %3i\r\n",effectSpeed, effectIntensity);
+    }
   #endif
 }
