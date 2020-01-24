@@ -91,6 +91,7 @@
 
 #ifdef M5STACK
   #include <M5Stack.h>
+  uint8_t M5line = 1;
 #endif
 
 //version code in format yymmddb (b = daily build)
@@ -574,8 +575,23 @@ void loop() {
   #endif
   #ifdef M5STACK
     M5.update();
+    if (M5.BtnA.wasPressed()) {
+      M5.Lcd.clear(BLACK);
+      M5.Lcd.setTextColor(YELLOW);
+      M5.Lcd.setCursor(80, 0); M5.Lcd.println("WLED ready");
+      M5line = 1;
+    }
     if (M5.BtnB.wasPressed()) {
+      if (M5line > 13) {M5.Lcd.clear(BLACK); M5.Lcd.setCursor(0, 0); M5line = 1;}
+      M5.Lcd.setTextColor(WHITE);
       M5.Lcd.printf("Speed: %3i   Intesity: %3i\r\n",effectSpeed, effectIntensity);
+      M5line++;
+    }
+    if (M5.BtnC.wasPressed()) {
+      if (M5line > 13) {M5.Lcd.clear(BLACK); M5.Lcd.setCursor(0, 0); M5line = 1;}
+      M5.Lcd.setTextColor(GREEN);
+      M5.Lcd.printf("Heap: %5i Loops/s: %4i\r\n",ESP.getFreeHeap(), loops/10);
+      M5line++;
     }
   #endif
 }
